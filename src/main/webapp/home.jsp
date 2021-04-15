@@ -7,9 +7,15 @@
     <title>Insert title here</title>
     </head>
     <body>
+        <h2> Add Alien </h2>
         <form action="addAlien">
             <input type="text" name="aid"><br>
             <input type="text" name="aname"><br>
+            <input type="submit"><br>
+        </form>
+        <h2> Get Alien </h2>
+        <form action="getAlien">
+            <input type="text" name="aid"><br>
             <input type="submit"><br>
         </form>
     </body>
