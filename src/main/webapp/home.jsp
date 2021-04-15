@@ -18,5 +18,16 @@
             <input type="text" name="aid"><br>
             <input type="submit"><br>
         </form>
+        <h2> Update Alien </h2>
+        <form action="updateAlien">
+            <input type="text" name="aid"><br>
+            <input type="text" name="aname"><br>
+            <input type="submit"><br>
+        </form>
+        <h2> Delete Alien </h2>
+        <form action="deleteAlien">
+            <input type="text" name="aid"><br>
+            <input type="submit"><br>
+        </form>
     </body>
 </html>
