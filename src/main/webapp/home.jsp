@@ -29,5 +29,7 @@
             <input type="text" name="aid"><br>
             <input type="submit"><br>
         </form>
+        </br>
+        <a href="/aliens" class="button">Get Aliens</a>
     </body>
 </html>

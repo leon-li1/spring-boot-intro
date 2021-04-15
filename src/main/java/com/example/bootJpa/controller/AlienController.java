@@ -4,8 +4,10 @@ import com.example.bootJpa.dao.AlienRepo;
 import com.example.bootJpa.model.Alien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class AlienController {
         repo.save(alien);
         return "home.jsp";
     }
+
     @RequestMapping("/getAlien")
     public ModelAndView getAlien(@RequestParam int aid) {
         ModelAndView mv = new ModelAndView("showAlien.jsp");
@@ -34,17 +37,16 @@ public class AlienController {
         mv.addObject(alien);
         return mv;
     }
+
     @RequestMapping("/updateAlien")
     public ModelAndView updateAlien(Alien alien) {
         ModelAndView mv = new ModelAndView("showAlien.jsp");
         repo.deleteById(alien.getAid());
         repo.save(alien);
-//        ArrayList<Alien> aliens1 = new ArrayList<>();
-//        repo.findAll().forEach(alien1 -> aliens1.add(alien1));
-//        Alien[] aliens = (Alien[]) aliens1.toArray();
         mv.addObject(alien);
         return mv;
     }
+
     @RequestMapping("/deleteAlien")
     public ModelAndView deleteAlien(@RequestParam int aid) {
         ModelAndView mv = new ModelAndView("showAlien.jsp");
@@ -52,5 +54,17 @@ public class AlienController {
         repo.deleteById(aid);
         mv.addObject(alien);
         return mv;
+    }
+
+    @RequestMapping("/aliens")
+    @ResponseBody
+    public String getAliens() {
+        return repo.findAll().toString();
+    }
+
+    @RequestMapping("/alien/{aid}")
+    @ResponseBody
+    public String getAlienByAid(@PathVariable("aid") int aid) {
+        return repo.findById(aid).toString();
     }
 }
