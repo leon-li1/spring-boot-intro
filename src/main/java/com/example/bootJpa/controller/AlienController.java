@@ -3,33 +3,23 @@ package com.example.bootJpa.controller;
 import com.example.bootJpa.dao.AlienRepo;
 import com.example.bootJpa.model.Alien;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
 public class AlienController {
     @Autowired
     AlienRepo repo;
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String home() {
         return "home.jsp";
     }
 
-    @RequestMapping("/addAlien")
-    public String addAlien(Alien alien) {
-        repo.save(alien);
-        return "home.jsp";
-    }
-
-    @RequestMapping("/getAlien")
+    @GetMapping("/getAlien")
     public ModelAndView getAlien(@RequestParam int aid) {
         ModelAndView mv = new ModelAndView("showAlien.jsp");
         Alien alien = repo.findById(aid).orElse(new Alien());
@@ -37,33 +27,33 @@ public class AlienController {
         return mv;
     }
 
-    @RequestMapping("/updateAlien")
-    public ModelAndView updateAlien(Alien alien) {
-        ModelAndView mv = new ModelAndView("showAlien.jsp");
-        repo.deleteById(alien.getAid());
-        repo.save(alien);
-        mv.addObject(alien);
-        return mv;
-    }
-
-    @RequestMapping("/deleteAlien")
-    public ModelAndView deleteAlien(@RequestParam int aid) {
-        ModelAndView mv = new ModelAndView("showAlien.jsp");
-        Alien alien = repo.findById(aid).orElse(new Alien());
-        repo.deleteById(aid);
-        mv.addObject(alien);
-        return mv;
-    }
-
-    @RequestMapping("/aliens")
-    @ResponseBody
+    @GetMapping(value = "/aliens", produces = {"application/json"})
     public List<Alien> getAliens() {
         return repo.findAll();
     }
 
-    @RequestMapping("/alien/{aid}")
-    @ResponseBody
+    @GetMapping("/alien/{aid}")
     public Optional<Alien> getAlienByAid(@PathVariable("aid") int aid) {
         return repo.findById(aid);
     }
+
+    @PostMapping("/alien")
+    public Alien addAlien(@RequestBody Alien alien) {
+        repo.save(alien);
+        return alien;
+    }
+
+    @PutMapping("/alien")
+    public Alien updateAlien(@RequestBody Alien alien) {
+        repo.save(alien);
+        return alien;
+    }
+
+    @DeleteMapping("/alien/{aid}")
+    public Alien deleteAlien(@PathVariable("aid") int aid) {
+        Alien alien = repo.findById(aid).orElse(new Alien());
+        repo.delete(alien);
+        return alien;
+    }
+
 }
